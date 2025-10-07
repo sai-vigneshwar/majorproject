@@ -549,61 +549,156 @@ export default function VideoMeetComponent() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     p: { xs: 2, sm: 3 },
-                    background: 'linear-gradient(135deg, #0f1020 0%, #1b1c36 50%, #2a1f4a 100%)'
+                    background: 'linear-gradient(135deg, #f5f7fa 0%, #e8eef3 50%, #dfe7f0 100%)',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        top: '-30%',
+                        right: '-15%',
+                        width: '700px',
+                        height: '700px',
+                        background: 'radial-gradient(circle, rgba(108,99,255,0.08) 0%, transparent 70%)',
+                        borderRadius: '50%',
+                        pointerEvents: 'none'
+                    }
                 }}>
                     <Box sx={{
                         width: '100%',
-                        maxWidth: 1100,
+                        maxWidth: 1200,
                         display: 'grid',
                         gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
-                        gap: { xs: 2, sm: 3 },
-                        alignItems: 'stretch'
+                        gap: { xs: 3, sm: 4 },
+                        alignItems: 'stretch',
+                        position: 'relative',
+                        zIndex: 1
                     }}>
                         <Paper elevation={0} sx={{
-                            p: { xs: 2, sm: 3 },
-                            bgcolor: 'rgba(255,255,255,0.08)',
-                            border: '1px solid rgba(255,255,255,0.12)',
-                            borderRadius: 3,
-                            backdropFilter: 'blur(10px)',
+                            p: { xs: 3, sm: 5 },
+                            background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)',
+                            border: '1px solid rgba(108,99,255,0.15)',
+                            borderRadius: '28px',
+                            backdropFilter: 'blur(20px)',
+                            boxShadow: '0 20px 60px rgba(108,99,255,0.15)',
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'center'
                         }}>
-                            <Typography variant="h5" sx={{ color: 'white', fontWeight: 800, mb: 2 }}>
-                                Enter the Lobby
+                            <Box sx={{
+                                width: 64,
+                                height: 64,
+                                background: 'linear-gradient(135deg, #6C63FF 0%, #5a52d5 100%)',
+                                borderRadius: '18px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                mb: 3,
+                                boxShadow: '0 8px 24px rgba(108,99,255,0.35)'
+                            }}>
+                                <VideocamIcon sx={{ color: 'white', fontSize: '2rem' }} />
+                            </Box>
+                            <Typography variant="h4" sx={{ 
+                                color: '#2c3e50', 
+                                fontWeight: 800, 
+                                mb: 1.5,
+                                letterSpacing: '-0.5px'
+                            }}>
+                                Join Meeting
                             </Typography>
-                            <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.8)', mb: 2 }}>
-                                Choose a display name and preview your camera before joining.
+                            <Typography variant="body1" sx={{ 
+                                color: '#5a6c7d', 
+                                mb: 4,
+                                lineHeight: 1.6
+                            }}>
+                                Enter your name and preview your camera before joining the meeting.
                             </Typography>
-                            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} alignItems={{ xs: 'stretch', sm: 'center' }}>
+                            <Stack spacing={2.5}>
                                 <TextField
                                     id="outlined-basic"
-                                    label="Username"
+                                    label="Your Name"
                                     value={username}
                                     onChange={e => setUsername(e.target.value)}
+                                    onKeyPress={(e) => e.key === 'Enter' && username.trim() && connect()}
                                     variant="outlined"
                                     fullWidth
+                                    placeholder="Enter your display name"
                                     sx={{
-                                        bgcolor: 'rgba(255,255,255,0.08)',
-                                        borderRadius: 2
+                                        '& .MuiOutlinedInput-root': {
+                                            backgroundColor: 'rgba(255,255,255,0.9)',
+                                            borderRadius: '14px',
+                                            '&:hover': {
+                                                backgroundColor: 'rgba(255,255,255,0.95)',
+                                            },
+                                            '&.Mui-focused': {
+                                                backgroundColor: 'white',
+                                            }
+                                        }
+                                    }}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <Box sx={{ color: '#6C63FF', display: 'flex' }}>
+                                                    👤
+                                                </Box>
+                                            </InputAdornment>
+                                        )
                                     }}
                                 />
-                                <Button variant="contained" size="large" onClick={connect} sx={{ px: 3 }}>
-                                    Connect
+                                <Button 
+                                    variant="contained" 
+                                    size="large" 
+                                    onClick={connect}
+                                    disabled={!username.trim()}
+                                    sx={{ 
+                                        py: 1.8,
+                                        fontSize: '1.05rem',
+                                        background: 'linear-gradient(135deg, #6C63FF 0%, #5a52d5 100%)',
+                                        borderRadius: '14px',
+                                        textTransform: 'none',
+                                        fontWeight: 700,
+                                        boxShadow: '0 8px 24px rgba(108,99,255,0.35)',
+                                        transition: 'all 0.3s ease',
+                                        '&:hover': {
+                                            transform: 'translateY(-2px)',
+                                            boxShadow: '0 12px 32px rgba(108,99,255,0.45)',
+                                            background: 'linear-gradient(135deg, #7b72ff 0%, #6b63e5 100%)'
+                                        },
+                                        '&:disabled': {
+                                            background: 'rgba(0,0,0,0.12)',
+                                            color: 'rgba(0,0,0,0.26)'
+                                        }
+                                    }}
+                                >
+                                    Join Now
                                 </Button>
                             </Stack>
                         </Paper>
 
                         <Paper elevation={0} sx={{
-                            p: 1.5,
-                            bgcolor: 'rgba(255,255,255,0.08)',
-                            border: '1px solid rgba(255,255,255,0.12)',
-                            borderRadius: 3,
-                            backdropFilter: 'blur(10px)',
+                            p: 2,
+                            background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)',
+                            border: '1px solid rgba(108,99,255,0.15)',
+                            borderRadius: '28px',
+                            backdropFilter: 'blur(20px)',
+                            boxShadow: '0 20px 60px rgba(108,99,255,0.15)',
                             display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            position: 'relative',
+                            overflow: 'hidden'
                         }}>
+                            <Typography variant="caption" sx={{ 
+                                color: '#5a6c7d',
+                                mb: 1.5,
+                                px: 1,
+                                fontWeight: 600,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px',
+                                fontSize: '0.7rem'
+                            }}>
+                                Camera Preview
+                            </Typography>
                             <Box
                                 component="video"
                                 ref={localVideoref}
@@ -612,9 +707,10 @@ export default function VideoMeetComponent() {
                                 sx={{
                                     width: '100%',
                                     aspectRatio: '16 / 9',
-                                    bgcolor: 'black',
-                                    borderRadius: 2,
-                                    boxShadow: '0 12px 30px rgba(0,0,0,0.35)'
+                                    bgcolor: '#1a1a1a',
+                                    borderRadius: '20px',
+                                    boxShadow: '0 12px 30px rgba(0,0,0,0.2)',
+                                    objectFit: 'cover'
                                 }}
                             />
                         </Paper>
