@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import io from "socket.io-client";
-import { Badge, IconButton, TextField, Button, Box, Paper, Typography, Stack } from '@mui/material';
+import { Badge, IconButton, TextField, Button, Box, Paper, Typography, Stack, InputAdornment } from '@mui/material';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import VideocamOffIcon from '@mui/icons-material/VideocamOff'
 import styles from "../styles/videoComponent.module.css";
@@ -723,7 +723,12 @@ export default function VideoMeetComponent() {
                     {showModal ? <div className={styles.chatRoom}>
 
                         <div className={styles.chatContainer}>
-                            <h1>Chat</h1>
+                            <div className={styles.chatHeader}>
+                                <h1>Chat</h1>
+                                <div className={styles.closeChat} onClick={() => setModal(false)}>
+                                    ×
+                                </div>
+                            </div>
 
                             <div className={styles.chattingDisplay}>
 
@@ -731,19 +736,93 @@ export default function VideoMeetComponent() {
 
                                     console.log(messages)
                                     return (
-                                        <div style={{ marginBottom: "20px" }} key={index}>
-                                            <p style={{ fontWeight: "bold" }}>{item.sender}</p>
-                                            <p>{item.data}</p>
+                                        <div key={index} className={styles.messageWrapper}>
+                                            <span className={styles.messageSender}>{item.sender}</span>
+                                            <div className={styles.messageBubble}>
+                                                <p>{item.data}</p>
+                                            </div>
                                         </div>
                                     )
-                                }) : <p>No Messages Yet</p>}
+                                }) : (
+                                    <Box sx={{ 
+                                        textAlign: 'center', 
+                                        py: 6,
+                                        color: '#5a6c7d',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        height: '100%'
+                                    }}>
+                                        <ChatIcon sx={{ fontSize: 56, color: '#6C63FF', opacity: 0.4, mb: 2 }} />
+                                        <Typography variant="h6" sx={{ fontWeight: 700, color: '#2c3e50', mb: 1 }}>
+                                            No messages yet
+                                        </Typography>
+                                        <Typography variant="body2" sx={{ color: '#8a96a3' }}>
+                                            Start the conversation by sending a message
+                                        </Typography>
+                                    </Box>
+                                )}
 
 
                             </div>
 
                             <div className={styles.chattingArea}>
-                                <TextField value={message} onChange={(e) => setMessage(e.target.value)} id="outlined-basic" label="Enter Your chat" variant="outlined" />
-                                <Button variant='contained' onClick={sendMessage}>Send</Button>
+                                <TextField 
+                                    value={message} 
+                                    onChange={(e) => setMessage(e.target.value)} 
+                                    onKeyPress={(e) => e.key === 'Enter' && message.trim() && sendMessage()}
+                                    id="outlined-basic" 
+                                    label="Type a message..." 
+                                    variant="outlined"
+                                    fullWidth
+                                    size="small"
+                                    multiline
+                                    maxRows={3}
+                                    sx={{
+                                        '& .MuiOutlinedInput-root': {
+                                            backgroundColor: 'white',
+                                            borderRadius: '14px',
+                                            border: '2px solid rgba(108,99,255,0.15)',
+                                            '&:hover': {
+                                                backgroundColor: 'white',
+                                                borderColor: 'rgba(108,99,255,0.25)',
+                                            },
+                                            '&.Mui-focused': {
+                                                backgroundColor: 'white',
+                                                borderColor: '#6C63FF',
+                                            }
+                                        }
+                                    }}
+                                />
+                                <Button 
+                                    variant='contained' 
+                                    onClick={sendMessage}
+                                    disabled={!message.trim()}
+                                    sx={{
+                                        px: 3,
+                                        py: 1.5,
+                                        background: 'linear-gradient(135deg, #6C63FF 0%, #5a52d5 100%)',
+                                        borderRadius: '14px',
+                                        textTransform: 'none',
+                                        fontWeight: 700,
+                                        boxShadow: '0 6px 18px rgba(108,99,255,0.35)',
+                                        whiteSpace: 'nowrap',
+                                        minWidth: '80px',
+                                        transition: 'all 0.3s ease',
+                                        '&:hover': {
+                                            background: 'linear-gradient(135deg, #7b72ff 0%, #6b63e5 100%)',
+                                            boxShadow: '0 8px 24px rgba(108,99,255,0.45)',
+                                            transform: 'translateY(-2px)',
+                                        },
+                                        '&:disabled': {
+                                            background: 'rgba(0,0,0,0.12)',
+                                            color: 'rgba(0,0,0,0.26)'
+                                        }
+                                    }}
+                                >
+                                    Send
+                                </Button>
                             </div>
 
 
@@ -752,24 +831,63 @@ export default function VideoMeetComponent() {
 
 
                     <div className={styles.buttonContainers}>
-                        <IconButton onClick={handleVideo} style={{ color: "white" }}>
+                        <IconButton 
+                            onClick={handleVideo} 
+                            sx={{ 
+                                color: video ? '#6C63FF' : '#5a6c7d',
+                                '&:hover': { color: '#6C63FF' }
+                            }}
+                        >
                             {(video === true) ? <VideocamIcon /> : <VideocamOffIcon />}
                         </IconButton>
-                        <IconButton onClick={handleEndCall} style={{ color: "red" }}>
+                        <IconButton 
+                            onClick={handleEndCall} 
+                            data-end-call="true"
+                            sx={{ color: 'white' }}
+                        >
                             <CallEndIcon />
                         </IconButton>
-                        <IconButton onClick={handleAudio} style={{ color: "white" }}>
+                        <IconButton 
+                            onClick={handleAudio} 
+                            sx={{ 
+                                color: audio ? '#6C63FF' : '#5a6c7d',
+                                '&:hover': { color: '#6C63FF' }
+                            }}
+                        >
                             {audio === true ? <MicIcon /> : <MicOffIcon />}
                         </IconButton>
 
                         {screenAvailable === true ?
-                            <IconButton onClick={handleScreen} style={{ color: "white" }}>
+                            <IconButton 
+                                onClick={handleScreen} 
+                                sx={{ 
+                                    color: screen ? '#6C63FF' : '#5a6c7d',
+                                    '&:hover': { color: '#6C63FF' }
+                                }}
+                            >
                                 {screen === true ? <ScreenShareIcon /> : <StopScreenShareIcon />}
                             </IconButton> : <></>}
 
-                        <Badge badgeContent={newMessages} max={999} color='orange'>
-                            <IconButton onClick={() => setModal(!showModal)} style={{ color: "white" }}>
-                                <ChatIcon />       </IconButton>
+                        <Badge 
+                            badgeContent={newMessages} 
+                            max={999} 
+                            sx={{
+                                '& .MuiBadge-badge': {
+                                    background: 'linear-gradient(135deg, #FF6584 0%, #FF4757 100%)',
+                                    color: 'white',
+                                    fontWeight: 700
+                                }
+                            }}
+                        >
+                            <IconButton 
+                                onClick={() => setModal(!showModal)} 
+                                sx={{ 
+                                    color: showModal ? '#6C63FF' : '#5a6c7d',
+                                    '&:hover': { color: '#6C63FF' }
+                                }}
+                            >
+                                <ChatIcon />
+                            </IconButton>
                         </Badge>
 
                     </div>
@@ -778,8 +896,8 @@ export default function VideoMeetComponent() {
                     {/* This is the updated part for local video rendering */}
                     {video && <video className={styles.meetUserVideo} ref={localVideoref} autoPlay muted></video>}
                     {!video && <div className={styles.videoOffPlaceholder}>
-                        <VideocamOffIcon sx={{ fontSize: 60, color: 'white' }} />
-                        <Typography variant="h6" sx={{ color: 'white' }}>Video is off</Typography>
+                        <VideocamOffIcon sx={{ fontSize: 48, color: '#6C63FF' }} />
+                        <Typography variant="body1" sx={{ color: '#5a6c7d', fontWeight: 600 }}>Camera Off</Typography>
                     </div>}
 
 
