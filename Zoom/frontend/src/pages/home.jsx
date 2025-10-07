@@ -51,7 +51,7 @@ function HomeComponent() {
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <VideocamIcon sx={{ color: 'primary.main' }} />
                     <Typography variant="h6" sx={{ color: 'white', fontWeight: 700 }}>
-                        PopMeet
+                        Zoomify
                     </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>

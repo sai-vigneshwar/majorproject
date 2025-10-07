@@ -217,8 +217,8 @@ export default function Authentication() {
                                 InputProps={{
                                     startAdornment: (
                                         <InputAdornment position="start">
-                                            <AccountCircle />
-                                        </InputAdornment>
+                                                <AccountCircle />
+                                            </InputAdornment>
                                     )
                                 }}
                             />

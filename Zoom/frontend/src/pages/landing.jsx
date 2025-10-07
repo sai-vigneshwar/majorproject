@@ -35,30 +35,18 @@ export default function LandingPage() {
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <VideocamIcon sx={{ color: 'primary.main' }} />
                     <Typography variant="h6" sx={{ color: 'white', fontWeight: 800 }}>
-                        PopMeet
+                        Zoomify
                     </Typography>
                 </Box>
                 <Stack direction="row" spacing={1.5} alignItems="center">
-                    <Button
-                        startIcon={<RocketLaunchIcon />}
-                        onClick={() => router('/aljk23')}
-                        sx={{ color: 'white' }}
-                    >
-                        Join as Guest
-                    </Button>
-                    <Button
-                        startIcon={<PersonAddAltIcon />}
-                        onClick={() => router('/auth')}
-                        sx={{ color: 'white' }}
-                    >
-                        Register
-                    </Button>
+                  
+                   
                     <Button
                         variant="contained"
                         startIcon={<LoginIcon />}
                         onClick={() => router('/auth')}
                     >
-                        Login
+                        Login/Register
                     </Button>
                 </Stack>
             </Box>
@@ -96,13 +84,7 @@ export default function LandingPage() {
                             >
                                 Get Started
                             </Button>
-                            <Button
-                                color="secondary"
-                                onClick={() => router('/aljk23')}
-                                sx={{ color: 'white' }}
-                            >
-                                Try as Guest
-                            </Button>
+                          
                         </Stack>
                     </Box>
 
